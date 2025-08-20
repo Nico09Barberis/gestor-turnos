@@ -3,6 +3,11 @@ import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 
+import authRoutes from "./routes/auth.js";
+import barberRoutes from "./routes/barbers.js";
+import appointmentRoutes from "./routes/appointments.js";
+
+
 dotenv.config();
 
 const app = express();
@@ -13,6 +18,12 @@ app.use(express.json());
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB conectado"))
   .catch(err => console.error(err));
+
+
+app.use("/api/auth", authRoutes);
+app.use("/api/barbers", barberRoutes);
+app.use("/api/appointments", appointmentRoutes);
+
 
 // Ruta de prueba
 app.get("/", (req, res) => {
