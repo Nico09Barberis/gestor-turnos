@@ -16,9 +16,9 @@ const LoginForm = () => {
 
       // Redirección según rol
       if (user.role === "client") {
-        navigate("/dashboard-client");
-      } else if (user.role === "barber") {
-        navigate("/dashboard-barber");
+        navigate("/home");
+      } else if (user.role === "admin") {
+        navigate("/dashboard");
       } else {
         navigate("/"); // fallback
       }
