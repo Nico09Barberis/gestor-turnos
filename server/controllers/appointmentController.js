@@ -5,7 +5,7 @@ export const createAppointment = async (req, res) => {
   try {
     const { barberId, date, time } = req.body;
 
-    // verificar que no exista turno para ese barber en ese horario
+    // verificar que no exista turno pendiente para ese barber en ese horario
     const exists = await Appointment.findOne({ barberId, date, time, status: "pending" });
     if (exists) return res.status(400).json({ message: "Slot not available" });
 
@@ -13,7 +13,8 @@ export const createAppointment = async (req, res) => {
       clientId: req.user.id,
       barberId,
       date,
-      time
+      time,
+      status: "pending",
     });
     await appointment.save();
 
@@ -22,6 +23,7 @@ export const createAppointment = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 // Ver mis turnos (client)
 export const getMyAppointments = async (req, res) => {
@@ -37,7 +39,14 @@ export const getMyAppointments = async (req, res) => {
 export const getAllAppointments = async (req, res) => {
   try {
     const query = {};
+
+    // Filtrar por fecha si viene en query
     if (req.query.date) query.date = req.query.date;
+
+    // Si el usuario es barbero, que solo vea sus turnos
+    if (req.user.role === "admin") {
+      query.barberId = req.user.id;
+    }
 
     const appointments = await Appointment.find(query)
       .populate("clientId", "name email")
@@ -48,6 +57,7 @@ export const getAllAppointments = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 // Cambiar estado (admin)
 export const updateStatus = async (req, res) => {
