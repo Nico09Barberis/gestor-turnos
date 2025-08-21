@@ -12,6 +12,7 @@ import Home from "./pages/Users/Home"; // Cliente
 import Dashboard from "./pages/Barbers/Dashboard"; // Barbero
 import ProtectedRoute from "./components/ProtectedRoutes.jsx";
 import AppointmentPage from "./pages/Users/AppoitmentsPage.jsx";
+import UserLayout from "./components/layout/UserLayout.jsx";
 
 function App() {
   return (
@@ -38,8 +39,10 @@ function App() {
             path="/home"
             element={
               <ProtectedRoute allowedRole="client">
-                <Home />
-                <AppointmentPage />
+                <UserLayout>
+                  <Home />
+                  <AppointmentPage />
+                </UserLayout>
               </ProtectedRoute>
             }
           />

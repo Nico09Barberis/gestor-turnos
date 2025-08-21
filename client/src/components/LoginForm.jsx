@@ -56,6 +56,15 @@ const LoginForm = () => {
         Entrar
       </button>
       {message && <p className="mt-4 text-red-500">{message}</p>}
+      <p className="mt-4 text-sm text-gray-600">
+        ¿No tenés cuenta?{" "}
+        <span
+          className="text-blue-600 cursor-pointer hover:underline"
+          onClick={() => navigate("/register")}
+        >
+          Regístrate acá
+        </span>
+      </p>
     </form>
   );
 };

@@ -1,11 +1,13 @@
 import { useState } from "react";
 import API from "../services/api";
+import { useNavigate } from "react-router-dom";
 
 const RegisterForm = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -62,6 +64,16 @@ const RegisterForm = () => {
       </button>
 
       {message && <p className="mt-4 text-red-500">{message}</p>}
+
+        <p className="mt-4 text-sm text-gray-600">
+        ¿Ya tenés cuenta?{" "}
+        <span
+          className="text-blue-600 cursor-pointer hover:underline"
+          onClick={() => navigate("/login")}
+        >
+          Inicia sesion acá
+        </span>
+      </p>
     </form>
   );
 };
