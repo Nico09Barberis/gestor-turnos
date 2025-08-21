@@ -1,17 +1,17 @@
 import { useState, useEffect, useContext } from "react";
 import API from "../services/api";
 import { getBarbers } from "../services/user.js";
-
 import { AuthContext } from "../context/authContext.jsx";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { format } from "date-fns";
 
 const AppointmentForm = () => {
   const { user } = useContext(AuthContext);
 
   const [barbers, setBarbers] = useState([]);
   const [selectedBarber, setSelectedBarber] = useState("");
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(null);
   const [time, setTime] = useState("");
   const [availableTimes, setAvailableTimes] = useState([]);
   const [message, setMessage] = useState("");
@@ -27,9 +27,11 @@ const AppointmentForm = () => {
   useEffect(() => {
     if (!selectedBarber || !date) return;
 
-    API.get(`/appointments?barberId=${selectedBarber}&date=${date}`)
+    const formattedDate = format(date, "yyyy-MM-dd");
+
+    API.get(`/appointments?barberId=${selectedBarber}&date=${formattedDate}`)
       .then((response) => {
-        const bookedTimes = response.data.map((a) => a.time); // turnos ya ocupados
+        const bookedTimes = response.data.map((a) => a.time);
         const times = [];
 
         // Generar horarios de 9:00 a 16:30 cada 30 min
@@ -42,7 +44,9 @@ const AppointmentForm = () => {
         const freeTimes = times.filter((t) => !bookedTimes.includes(t));
         setAvailableTimes(freeTimes);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        console.error("Error al traer barberos:", err.response || err);
+      });
   }, [selectedBarber, date]);
 
   const handleSubmit = async (e) => {
@@ -53,13 +57,21 @@ const AppointmentForm = () => {
     }
 
     try {
+      const formattedDate = format(date, "yyyy-MM-dd");
+
       await API.post("/appointments", {
         barberId: selectedBarber,
-        date,
+        date: formattedDate,
         time,
-        userId: user._id,
+        user,
       });
+
       setMessage("Appointment created successfully!");
+      // Reset form
+      setSelectedBarber("");
+      setDate(null);
+      setTime("");
+      setAvailableTimes([]);
     } catch (err) {
       setMessage(err.response?.data?.message || "Error creating appointment.");
     }
@@ -115,7 +127,12 @@ const AppointmentForm = () => {
 
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+          disabled={!selectedBarber || !date || !time}
+          className={`w-full p-2 rounded text-white ${
+            !selectedBarber || !date || !time
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-blue-500 hover:bg-blue-600"
+          }`}
         >
           Book Appointment
         </button>
