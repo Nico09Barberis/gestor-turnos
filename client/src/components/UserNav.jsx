@@ -15,7 +15,7 @@ const UserNav = () => {
     <nav className="bg-white shadow-md p-4 flex justify-between items-center">
       {/* Logo o nombre de la app */}
       <Link to="/home" className="text-xl font-bold text-blue-600">
-        DentalPro
+        gestor-turnos
       </Link>
 
       {/* Menú de navegación */}
