@@ -14,14 +14,13 @@ import ProtectedRoute from "./components/ProtectedRoutes.jsx";
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
+    <Router>
+      <AuthProvider>
         <Routes>
           {/* ======== PÚBLICAS ========= */}
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-
 
           {/* ======== BARBERO ========= */}
           <Route
@@ -33,19 +32,18 @@ function App() {
             }
           />
 
-
-            {/* ======== CLIENTE ========= */}
-            <Route
-              path="/home"
-              element={
-                <ProtectedRoute allowedRole="client">
-                  <Home />
-                </ProtectedRoute>
-              }
-            />
+          {/* ======== CLIENTE ========= */}
+          <Route
+            path="/home"
+            element={
+              <ProtectedRoute allowedRole="client">
+                <Home />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
-      </Router>
-    </AuthProvider>
+      </AuthProvider>
+    </Router>
   );
 }
 
