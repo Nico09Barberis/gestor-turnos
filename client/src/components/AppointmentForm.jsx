@@ -1,0 +1,128 @@
+import { useState, useEffect, useContext } from "react";
+import API from "../services/api";
+import { getBarbers } from "../services/user.js";
+
+import { AuthContext } from "../context/authContext.jsx";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
+const AppointmentForm = () => {
+  const { user } = useContext(AuthContext);
+
+  const [barbers, setBarbers] = useState([]);
+  const [selectedBarber, setSelectedBarber] = useState("");
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
+  const [availableTimes, setAvailableTimes] = useState([]);
+  const [message, setMessage] = useState("");
+
+  // Traer lista de barberos (admins)
+  useEffect(() => {
+    getBarbers()
+      .then((data) => setBarbers(data))
+      .catch((err) => console.error(err));
+  }, []);
+
+  // Actualizar horarios disponibles cuando cambian barber o fecha
+  useEffect(() => {
+    if (!selectedBarber || !date) return;
+
+    API.get(`/appointments?barberId=${selectedBarber}&date=${date}`)
+      .then((response) => {
+        const bookedTimes = response.data.map((a) => a.time); // turnos ya ocupados
+        const times = [];
+
+        // Generar horarios de 9:00 a 16:30 cada 30 min
+        for (let h = 9; h < 17; h++) {
+          times.push(`${h.toString().padStart(2, "0")}:00`);
+          times.push(`${h.toString().padStart(2, "0")}:30`);
+        }
+
+        // Filtrar los horarios ya reservados
+        const freeTimes = times.filter((t) => !bookedTimes.includes(t));
+        setAvailableTimes(freeTimes);
+      })
+      .catch((err) => console.error(err));
+  }, [selectedBarber, date]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!selectedBarber || !date || !time) {
+      setMessage("Please select barber, date and time.");
+      return;
+    }
+
+    try {
+      await API.post("/appointments", {
+        barberId: selectedBarber,
+        date,
+        time,
+        userId: user._id,
+      });
+      setMessage("Appointment created successfully!");
+    } catch (err) {
+      setMessage(err.response?.data?.message || "Error creating appointment.");
+    }
+  };
+
+  return (
+    <div className="max-w-md mx-auto p-6 bg-white shadow-md rounded-md">
+      <h2 className="text-xl font-bold mb-4">Book an Appointment</h2>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Barbero */}
+        <select
+          value={selectedBarber}
+          onChange={(e) => setSelectedBarber(e.target.value)}
+          className="w-full border p-2 rounded"
+        >
+          <option value="">-- Select Barber --</option>
+          {barbers.map((b) => (
+            <option key={b._id} value={b._id}>
+              {b.name}
+            </option>
+          ))}
+        </select>
+
+        {/* Fecha */}
+        <div>
+          <label className="block mb-1">Select day</label>
+          <DatePicker
+            selected={date}
+            onChange={(d) => setDate(d)}
+            filterDate={(d) => d.getDay() !== 0} // bloquear domingos
+            minDate={new Date()} // no permitir fechas pasadas
+            dateFormat="yyyy-MM-dd"
+            className="w-full border p-2 rounded"
+          />
+        </div>
+
+        {/* Hora */}
+        <div>
+          <label className="block mb-1">Select Time</label>
+          <select
+            value={time}
+            onChange={(e) => setTime(e.target.value)}
+            className="w-full border p-2 rounded"
+          >
+            <option value="">-- Select --</option>
+            {availableTimes.map((t) => (
+              <option key={t} value={t}>
+                {t}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <button
+          type="submit"
+          className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+        >
+          Book Appointment
+        </button>
+        {message && <p className="mt-2 text-red-500">{message}</p>}
+      </form>
+    </div>
+  );
+};
+
+export default AppointmentForm;

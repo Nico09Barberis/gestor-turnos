@@ -11,6 +11,7 @@ import RegisterPage from "./pages/Auth/RegisterPage";
 import Home from "./pages/Users/Home"; // Cliente
 import Dashboard from "./pages/Barbers/Dashboard"; // Barbero
 import ProtectedRoute from "./components/ProtectedRoutes.jsx";
+import AppointmentPage from "./pages/Users/AppoitmentsPage.jsx";
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
             element={
               <ProtectedRoute allowedRole="client">
                 <Home />
+                <AppointmentPage />
               </ProtectedRoute>
             }
           />
