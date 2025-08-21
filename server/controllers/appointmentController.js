@@ -24,6 +24,17 @@ export const createAppointment = async (req, res) => {
   }
 };
 
+// Traer turnos ocupados por barbero y fecha
+export const getAppointmentsByBarberAndDate = async (req, res) => {
+  try {
+    const { barberId, date } = req.query;
+    const appointments = await Appointment.find({ barberId, date, status: "pending" });
+    res.json(appointments);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 
 // Ver mis turnos (client)
 export const getMyAppointments = async (req, res) => {

@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 import authRoutes from "./routes/auth.js";
 import barberRoutes from "./routes/barbers.js";
 import appointmentRoutes from "./routes/appointments.js";
+import userRoutes from "./routes/users.js";
 
 
 dotenv.config();
@@ -23,6 +24,7 @@ mongoose.connect(process.env.MONGO_URI)
 app.use("/api/auth", authRoutes);
 app.use("/api/barbers", barberRoutes);
 app.use("/api/appointments", appointmentRoutes);
+app.use("/api/users", userRoutes);
 
 
 // Ruta de prueba
