@@ -12,7 +12,7 @@ export const createBarber = async (req, res) => {
 };
 
 // Listar barberos
-export const getBarbers = async (req, res) => {
+export const getAllBarbers = async (req, res) => {
   try {
     const barbers = await Barber.find();
     res.json(barbers);
