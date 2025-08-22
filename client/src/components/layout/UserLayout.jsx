@@ -6,7 +6,7 @@ const UserLayout = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <UserNav />
-      <main className="flex-1 p-4">
+      <main className="flex-1">
         <Outlet /> {/* Aquí se renderizan las rutas hijas */}
       </main>
     </div>

@@ -5,9 +5,9 @@ import { authMiddleware, adminMiddleware } from "../middleware/authMiddleware.js
 const router = express.Router();
 
 router.post("/", authMiddleware, createAppointment);
-router.get("/", authMiddleware, getAppointmentsByBarberAndDate);
 router.get("/my", authMiddleware, getMyAppointments);
-router.get("/", authMiddleware, adminMiddleware, getAllAppointments);
+router.get("/all", authMiddleware, adminMiddleware, getAllAppointments);
+router.get("/barber", authMiddleware, getAppointmentsByBarberAndDate);
 router.put("/:id/status", authMiddleware, adminMiddleware, updateStatus);
 router.delete("/:id", authMiddleware, cancelAppointment);
 
