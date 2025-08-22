@@ -3,7 +3,7 @@ import { useState } from "react";
 import { createBarber } from "../services/barbers";
 
 const BarberCreate = () => {
-  const [barber, setBarber] = useState({ name: "", email: "" });
+  const [barber, setBarber] = useState({ name: "", email: "", password: "" });
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
@@ -13,7 +13,7 @@ const BarberCreate = () => {
       const res = await createBarber(barber);
       setMessage(res.message || "Barbero creado correctamente");
       setError("");
-      setBarber({ name: "", email: "" });
+      setBarber({ name: "", email: "", password: "" }); // reset form
     } catch (err) {
       setError(err.response?.data?.message || "Error al crear barbero");
       setMessage("");
@@ -42,6 +42,15 @@ const BarberCreate = () => {
           type="email"
           value={barber.email}
           onChange={(e) => setBarber({ ...barber, email: e.target.value })}
+          className="w-full p-2 mb-3 border rounded"
+          required
+        />
+
+        <label className="block mb-1">Contraseña</label>
+        <input
+          type="password"
+          value={barber.password}
+          onChange={(e) => setBarber({ ...barber, password: e.target.value })}
           className="w-full p-2 mb-3 border rounded"
           required
         />

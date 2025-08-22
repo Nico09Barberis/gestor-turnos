@@ -1,28 +1,44 @@
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 
+// controllers/barberController.js
+import bcrypt from "bcrypt";
+import User from "../models/User.js";
+
 export const createBarber = async (req, res) => {
   try {
     const { name, email, password } = req.body;
-    const existing = await User.findOne({ email });
-    if (existing) return res.status(400).json({ message: "Email ya registrado" });
 
+    // validar datos mínimos
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: "Todos los campos son requeridos" });
+    }
+
+    // verificar si ya existe
+    const existing = await User.findOne({ email });
+    if (existing) {
+      return res.status(400).json({ message: "El email ya está registrado" });
+    }
+
+    // encriptar contraseña
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash(password, salt);
 
-    const newBarber = await User.create({
+    // crear usuario con rol admin (barber)
+    const barber = new User({
       name,
       email,
       passwordHash,
-      role: "admin", // 👈 importante
+      role: "admin",
     });
 
-    res.status(201).json({ message: "Barbero creado correctamente", barber: newBarber });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+    await barber.save();
+
+    res.status(201).json({ message: "Barbero creado correctamente", barber });
+  } catch (err) {
+    res.status(500).json({ message: "Error al crear barbero", error: err.message });
   }
 };
-
 
 
 export const getAllBarbers = async (req, res) => {
