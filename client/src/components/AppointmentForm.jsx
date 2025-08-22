@@ -5,6 +5,7 @@ import { AuthContext } from "../context/authContext.jsx";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { format } from "date-fns";
+import { getAvailableTimes } from "../services/appointment.js";
 
 const AppointmentForm = () => {
   const { user } = useContext(AuthContext);
@@ -24,30 +25,12 @@ const AppointmentForm = () => {
   }, []);
 
   // Actualizar horarios disponibles cuando cambian barber o fecha
-  useEffect(() => {
-    if (!selectedBarber || !date) return;
+ useEffect(() => {
+  if (!selectedBarber || !date) return;
 
-    const formattedDate = format(date, "yyyy-MM-dd");
+  getAvailableTimes(selectedBarber, date).then(setAvailableTimes);
+}, [selectedBarber, date]);
 
-    API.get(`/appointments?barberId=${selectedBarber}&date=${formattedDate}`)
-      .then((response) => {
-        const bookedTimes = response.data.map((a) => a.time);
-        const times = [];
-
-        // Generar horarios de 9:00 a 16:30 cada 30 min
-        for (let h = 9; h < 17; h++) {
-          times.push(`${h.toString().padStart(2, "0")}:00`);
-          times.push(`${h.toString().padStart(2, "0")}:30`);
-        }
-
-        // Filtrar los horarios ya reservados
-        const freeTimes = times.filter((t) => !bookedTimes.includes(t));
-        setAvailableTimes(freeTimes);
-      })
-      .catch((err) => {
-        console.error("Error al traer barberos:", err.response || err);
-      });
-  }, [selectedBarber, date]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
