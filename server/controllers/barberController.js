@@ -1,4 +1,5 @@
 import User from "../models/User.js";
+import bcrypt from "bcryptjs";
 
 export const createBarber = async (req, res) => {
   try {
@@ -65,10 +66,9 @@ export const updateBarber = async (req, res) => {
 
 export const deleteBarber = async (req, res) => {
   try {
-    const barber = await User.findById(req.params.id);
+    const barber = await User.findByIdAndDelete(req.params.id);
     if (!barber) return res.status(404).json({ message: "Barbero no encontrado" });
 
-    await barber.remove();
     res.json({ message: "Barbero eliminado correctamente" });
   } catch (error) {
     res.status(500).json({ message: error.message });
