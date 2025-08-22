@@ -1,4 +1,4 @@
-import Barber from "../models/Barber.js";
+import User from "../models/User.js";
 
 export const createBarber = async (req, res) => {
   try {
