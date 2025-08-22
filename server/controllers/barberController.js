@@ -1,9 +1,6 @@
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 
-// controllers/barberController.js
-import bcrypt from "bcrypt";
-import User from "../models/User.js";
 
 export const createBarber = async (req, res) => {
   try {
