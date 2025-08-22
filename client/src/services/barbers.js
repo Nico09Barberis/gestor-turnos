@@ -23,3 +23,24 @@ export const deleteBarber = async (id) => {
   const res = await API.delete(`/admin/barbers/${id}`);
   return res.data;
 };
+
+
+// ================= BARBER PERFIL =================
+
+// Obtener perfil del barbero logueado
+export const getMyProfile = async () => {
+  const res = await API.get("/admin/barbers/me");
+  return res.data;
+};
+
+// Actualizar perfil del barbero (nombre, email)
+export const updateMyProfile = async (profileData) => {
+  const res = await API.put("/admin/barbers/me", profileData);
+  return res.data;
+};
+
+// Cambiar contraseña del barbero
+export const changeMyPassword = async (passwordData) => {
+  const res = await API.put("/admin/barbers/me/change-password", passwordData);
+  return res.data;
+};
