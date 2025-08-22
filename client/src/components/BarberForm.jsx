@@ -1,6 +1,6 @@
 // components/admin/BarberCreate.jsx
 import { useState } from "react";
-import { createBarber } from "../../services/admin/barber";
+import { createBarber } from "../services/barbers";
 
 const BarberCreate = () => {
   const [barber, setBarber] = useState({ name: "", email: "" });

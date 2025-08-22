@@ -21,6 +21,8 @@ import Home from "./pages/Users/Home";
 import AppointmentPage from "./pages/Users/AppoitmentsPage.jsx";
 import AppointmentsListPage from "./pages/Users/AppointmentsListPage.jsx";
 import ProfilePage from "./pages/Users/ProfilePage.jsx";
+import AdminLayout from "./components/layout/AdminLayout.jsx";
+import BarberCreatePage from "./pages/Barbers/BarberCreatePage.jsx";
 
 function App() {
   return (
@@ -33,14 +35,16 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
 
           {/* ======== BARBERO ========= */}
-          <Route
-            path="/dashboard"
+        <Route
             element={
               <ProtectedRoute allowedRole="admin">
-                <Dashboard />
+                <AdminLayout />
               </ProtectedRoute>
             }
-          />
+          >
+            <Route path="/dashboard" element={<Dashboard />} /> 
+            <Route path="/barbers/new" element={<BarberCreatePage />} />
+          </Route>
 
           {/* ======== CLIENTE ========= */}
           <Route

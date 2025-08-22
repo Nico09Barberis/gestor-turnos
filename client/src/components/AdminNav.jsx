@@ -55,10 +55,10 @@ const AdminNav = () => {
           Home
         </Link>
         <Link to="/barbers/new" className="hover:text-blue-600">
-          Agendar Turno
+          Cargar barbero
         </Link>
         <Link to="/barbers" className="hover:text-blue-600">
-          Mis Turnos
+          listar Barberos
         </Link>
         <Link to="/profile" className="hover:text-blue-600">
           Perfil
@@ -92,14 +92,14 @@ const AdminNav = () => {
             className="hover:text-blue-600"
             onClick={() => setIsOpen(false)}
           >
-            Agendar Turno
+            Cargar Barbero
           </Link>
           <Link
             to="/barbers"
             className="hover:text-blue-600"
             onClick={() => setIsOpen(false)}
           >
-            Mis Turnos
+            Listar Barberos
           </Link>
           <Link
             to="/profile"

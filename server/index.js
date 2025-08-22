@@ -22,7 +22,7 @@ mongoose.connect(process.env.MONGO_URI)
 
 
 app.use("/api/auth", authRoutes);
-app.use("/api/barbers", barberRoutes);
+app.use("/api/admin/barbers", barberRoutes);
 app.use("/api/appointments", appointmentRoutes);
 app.use("/api/users", userRoutes);
 
