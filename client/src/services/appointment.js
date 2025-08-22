@@ -38,6 +38,7 @@ export const getMyAppointments = async () => {
   return res.data;
 };
 
+
 // Cancelar un turno
 export const cancelAppointment = async (id) => {
   const res = await API.delete(`/appointments/${id}`);

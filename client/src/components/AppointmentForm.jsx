@@ -1,10 +1,10 @@
 import { useState, useEffect, useContext } from "react";
-import { getBarbers } from "../services/user.js";
 import { AuthContext } from "../context/authContext.jsx";
+import { getBarbers } from "../services/user.js";
+import { getAvailableTimes, createAppointment } from "../services/appointment.js";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-import { getAvailableTimes, createAppointment } from "../services/appointments.js";
 
 const AppointmentForm = () => {
   const { user } = useContext(AuthContext);
