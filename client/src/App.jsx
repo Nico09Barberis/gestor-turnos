@@ -20,6 +20,7 @@ import UserLayout from "./components/layout/UserLayout.jsx";
 import Home from "./pages/Users/Home";
 import AppointmentPage from "./pages/Users/AppoitmentsPage.jsx";
 import AppointmentsListPage from "./pages/Users/AppointmentsListPage.jsx";
+import ProfilePage from "./pages/Users/ProfilePage.jsx";
 
 function App() {
   return (
@@ -52,8 +53,7 @@ function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/appointments/new" element={<AppointmentPage />} />{" "}
             <Route path="/appointments" element={<AppointmentsListPage />} />{" "}
-            {/*
-            <Route path="/profile" element={<ProfilePage />} /> */}
+            <Route path="/profile" element={<ProfilePage />} /> 
           </Route>
         </Routes>
       </AuthProvider>
