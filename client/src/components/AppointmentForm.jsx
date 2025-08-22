@@ -1,11 +1,10 @@
 import { useState, useEffect, useContext } from "react";
-import API from "../services/api";
 import { getBarbers } from "../services/user.js";
 import { AuthContext } from "../context/authContext.jsx";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { format } from "date-fns";
-import { getAvailableTimes } from "../services/appointment.js";
+
+import { getAvailableTimes, createAppointment } from "../services/appointments.js";
 
 const AppointmentForm = () => {
   const { user } = useContext(AuthContext);
@@ -25,12 +24,11 @@ const AppointmentForm = () => {
   }, []);
 
   // Actualizar horarios disponibles cuando cambian barber o fecha
- useEffect(() => {
-  if (!selectedBarber || !date) return;
+  useEffect(() => {
+    if (!selectedBarber || !date) return;
 
-  getAvailableTimes(selectedBarber, date).then(setAvailableTimes);
-}, [selectedBarber, date]);
-
+    getAvailableTimes(selectedBarber, date).then(setAvailableTimes);
+  }, [selectedBarber, date]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,11 +38,9 @@ const AppointmentForm = () => {
     }
 
     try {
-      const formattedDate = format(date, "yyyy-MM-dd");
-
-      await API.post("/appointments", {
+      await createAppointment({
         barberId: selectedBarber,
-        date: formattedDate,
+        date,
         time,
         user,
       });

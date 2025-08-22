@@ -3,6 +3,7 @@ import API from "./api"; // 👈 este es tu axios con interceptor
 
 import { format } from "date-fns";
 
+// Traer horarios disponibles para un barbero y fecha
 export const getAvailableTimes = async (barberId, date) => {
   const formattedDate = format(date, "yyyy-MM-dd");
   const res = await API.get(`/appointments/barber?barberId=${barberId}&date=${formattedDate}`);
@@ -15,6 +16,19 @@ export const getAvailableTimes = async (barberId, date) => {
   }
 
   return times.filter((t) => !bookedTimes.includes(t));
+};
+
+
+// Crear turno
+export const createAppointment = async ({ barberId, date, time, user }) => {
+  const formattedDate = format(date, "yyyy-MM-dd");
+  const res = await API.post("/appointments", {
+    barberId,
+    date: formattedDate,
+    time,
+    user,
+  });
+  return res.data;
 };
 
 
