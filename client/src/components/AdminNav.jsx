@@ -60,6 +60,9 @@ const AdminNav = () => {
         <Link to="/barbers" className="hover:text-blue-600">
           listar Barberos
         </Link>
+        <Link to="/appointments" className="hover:text-blue-600">
+          Ver mis turnos
+        </Link>
         <Link to="/profile" className="hover:text-blue-600">
           Perfil
         </Link>
@@ -102,13 +105,17 @@ const AdminNav = () => {
             Listar Barberos
           </Link>
           <Link
+            to="/appointments" className="hover:text-blue-600"
+            >
+            Ver mis turnos
+          </Link>
+          <Link
             to="/profile"
             className="hover:text-blue-600"
             onClick={() => setIsOpen(false)}
           >
             Perfil
           </Link>
-
 
           <button
             onClick={handleLogout}
