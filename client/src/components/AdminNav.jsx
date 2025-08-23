@@ -54,16 +54,16 @@ const AdminNav = () => {
         <Link to="/dashboard" className="hover:text-blue-600">
           Home
         </Link>
-        <Link to="/barbers/new" className="hover:text-blue-600">
+        <Link to="/barber/new" className="hover:text-blue-600">
           Cargar barbero
         </Link>
-        <Link to="/barbers" className="hover:text-blue-600">
+        <Link to="/barber" className="hover:text-blue-600">
           listar Barberos
         </Link>
-        <Link to="/appointments" className="hover:text-blue-600">
+        <Link to="/barber/appointments" className="hover:text-blue-600">
           Ver mis turnos
         </Link>
-        <Link to="/profile" className="hover:text-blue-600">
+        <Link to="/barber/profile" className="hover:text-blue-600">
           Perfil
         </Link>
 

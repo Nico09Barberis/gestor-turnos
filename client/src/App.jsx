@@ -46,10 +46,10 @@ function App() {
             }
           >
             <Route path="/dashboard" element={<Dashboard />} /> 
-            <Route path="/barbers/new" element={<BarberCreatePage />} />
-            <Route path="/barbers" element={<BarberListPage />} />
-            <Route path="/profile" element={<BarberProfilePage />} /> 
-            <Route path="/appointments" element={<BarberAppointmentsPage />} /> 
+            <Route path="/barber/new" element={<BarberCreatePage />} />
+            <Route path="/barber" element={<BarberListPage />} />
+            <Route path="/barber/profile" element={<BarberProfilePage />} /> 
+            <Route path="/barber/appointments" element={<BarberAppointmentsPage />} /> 
           </Route>
 
           {/* ======== CLIENTE ========= */}
