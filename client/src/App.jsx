@@ -25,6 +25,7 @@ import AdminLayout from "./components/layout/AdminLayout.jsx";
 import BarberCreatePage from "./pages/Barbers/BarberCreatePage.jsx";
 import BarberListPage from "./pages/Barbers/BarberListPage.jsx";
 import BarberProfilePage from "./pages/Barbers/BarberProfilePage.jsx";
+import BarberAppointmentsPage from "./pages/Barbers/BarberAppointmentPage.jsx";
 
 function App() {
   return (
@@ -48,6 +49,7 @@ function App() {
             <Route path="/barbers/new" element={<BarberCreatePage />} />
             <Route path="/barbers" element={<BarberListPage />} />
             <Route path="/profile" element={<BarberProfilePage />} /> 
+            <Route path="/appointments" element={<BarberAppointmentsPage />} /> 
           </Route>
 
           {/* ======== CLIENTE ========= */}

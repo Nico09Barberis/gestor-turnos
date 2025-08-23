@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getMyAppointments } from "../services/appointments";
+import { getMyAppointments } from "../../services/appointment";
 
 const BarberAppointments = () => {
   const [appointments, setAppointments] = useState([]);
