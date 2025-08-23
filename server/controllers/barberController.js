@@ -106,8 +106,9 @@ export const getBarberAppointments = async (req, res) => {
       query.date = { $gte: start, $lte: end };
     }
 
-    const appointments = await Appointment.find(query)
-      .populate("client", "name email")
+     const appointments = await Appointment.find(query)
+      .populate("patient", "name email")
+      .populate("admin", "name email") // barber es un User con rol barber
       .sort("date");
 
     res.json(appointments);
