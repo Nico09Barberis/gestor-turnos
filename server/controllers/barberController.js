@@ -107,7 +107,7 @@ export const getBarberAppointments = async (req, res) => {
     }
 
      const appointments = await Appointment.find(query)
-      .populate("patient", "name email")
+      .populate("client", "name email")
       .populate("admin", "name email") // barber es un User con rol barber
       .sort("date");
 
