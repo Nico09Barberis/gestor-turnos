@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getMyAppointments } from "../../services/appointment";
+import { getBarberAppointments } from "../../services/appointment";
 
 const BarberAppointments = () => {
   const [appointments, setAppointments] = useState([]);
@@ -7,7 +7,7 @@ const BarberAppointments = () => {
 
   const fetchAppointments = async () => {
     try {
-      const data = await getMyAppointments(date);
+      const data = await getBarberAppointments(date);
       setAppointments(data);
     } catch (err) {
       console.error(err);
@@ -37,14 +37,25 @@ const BarberAppointments = () => {
             <li key={appt._id} className="p-3 border rounded">
               <p>
                 <strong>Paciente:</strong>{" "}
-                {appt.patient ? appt.patient.name : "Disponible"}
+                {appt.clientId ? appt.clientId.name : "Disponible"}
               </p>
               <p>
                 <strong>Fecha:</strong>{" "}
-                {new Date(appt.date).toLocaleString()}
+                {new Date(`${appt.date}T${appt.time}`).toLocaleString()}
               </p>
               <p>
-                <strong>Estado:</strong> {appt.status}
+                <strong>Estado:</strong>{" "}
+                <span
+                  className={
+                    appt.status === "pending"
+                      ? "text-yellow-600"
+                      : appt.status === "completed"
+                      ? "text-green-600"
+                      : "text-red-600"
+                  }
+                >
+                  {appt.status}
+                </span>
               </p>
             </li>
           ))}
