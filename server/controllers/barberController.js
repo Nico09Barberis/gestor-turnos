@@ -92,24 +92,16 @@ export const deleteBarber = async (req, res) => {
 // Obtener turnos del barbero logueado (con filtro opcional por fecha)
 export const getBarberAppointments = async (req, res) => {
   try {
-    const { date } = req.query; // ejemplo: ?date=2025-08-22
-    const barberId = req.user.id;
-
-    let query = { barber: barberId };
+    const { date } = req.query; // ?date=YYYY-MM-DD
+    const query = { barberId: req.user.id }; // barbero logueado
 
     if (date) {
-      // buscamos por día exacto (00:00 a 23:59)
-      const start = new Date(date);
-      const end = new Date(date);
-      end.setHours(23, 59, 59, 999);
-
-      query.date = { $gte: start, $lte: end };
+      query.date = date;
     }
 
-     const appointments = await Appointment.find(query)
-      .populate("client", "name email")
-      .populate("admin", "name email") // barber es un User con rol barber
-      .sort("date");
+    const appointments = await Appointment.find(query)
+      .populate("clientId", "name email") // trae info del cliente
+      .sort("time");
 
     res.json(appointments);
   } catch (error) {
