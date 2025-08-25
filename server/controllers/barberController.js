@@ -91,21 +91,18 @@ export const deleteBarber = async (req, res) => {
 
 // Obtener turnos del barbero logueado (con filtro opcional por fecha)
 export const getBarberAppointments = async (req, res) => {
-  try {
-    const { date } = req.query; // ?date=YYYY-MM-DD
-    const query = { barberId: req.user.id }; // barbero logueado
+   try {
+    const { barberId } = req.params;
 
-    if (date) {
-      query.date = date;
-    }
-
-    const appointments = await Appointment.find(query)
-      .populate("clientId", "name email") // trae info del cliente
-      .sort("time");
+    // Buscamos turnos del peluquero y populamos datos del cliente
+    const appointments = await Appointment.find({ barberId })
+      .populate("clientId", "name email") // opcional, para traer info del cliente
+      .sort({ date: 1, time: 1 }); // ordenados por fecha y hora
 
     res.json(appointments);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error(error);
+    res.status(500).json({ message: "Error al obtener los turnos" });
   }
 };
 
