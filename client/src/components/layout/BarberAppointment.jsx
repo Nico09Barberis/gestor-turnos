@@ -1,68 +1,46 @@
 import { useEffect, useState } from "react";
-import { getBarberAppointments } from "../../services/appointment";
+import { getBarberAppointments } from "../../services/appointment.js";
 
-const BarberAppointments = () => {
+function BarberAppointments() {
   const [appointments, setAppointments] = useState([]);
-  const [date, setDate] = useState("");
-
-  const fetchAppointments = async () => {
-    try {
-      const data = await getBarberAppointments(date);
-      setAppointments(data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const fetchAppointments = async () => {
+      try {
+        const data = await getBarberAppointments(); // o getBarberAppointments("2025-08-25")
+        setAppointments(data);
+      } catch (err) {
+        console.error("Error al obtener turnos:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchAppointments();
-  }, [date]);
+  }, []);
+
+  if (loading) return <p>Cargando...</p>;
 
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-white shadow rounded">
-      <h1 className="text-2xl font-bold mb-4">Mis Turnos</h1>
-
-      <input
-        type="date"
-        value={date}
-        onChange={(e) => setDate(e.target.value)}
-        className="border p-2 rounded mb-4"
-      />
-
+    <div>
+      <h2>Turnos agendados</h2>
       {appointments.length === 0 ? (
-        <p>No hay turnos</p>
+        <p>No hay turnos agendados</p>
       ) : (
-        <ul className="space-y-2">
-          {appointments.map((appt) => (
-            <li key={appt._id} className="p-3 border rounded">
-              <p>
-                <strong>Paciente:</strong>{" "}
-                {appt.clientId ? appt.clientId.name : "Disponible"}
-              </p>
-              <p>
-                <strong>Fecha:</strong>{" "}
-                {new Date(`${appt.date}T${appt.time}`).toLocaleString()}
-              </p>
-              <p>
-                <strong>Estado:</strong>{" "}
-                <span
-                  className={
-                    appt.status === "pending"
-                      ? "text-yellow-600"
-                      : appt.status === "completed"
-                      ? "text-green-600"
-                      : "text-red-600"
-                  }
-                >
-                  {appt.status}
-                </span>
-              </p>
+        <ul>
+          {appointments.map((t) => (
+            <li key={t._id}>
+              <strong>Cliente:</strong> {t.clientId?.name} <br />
+              <strong>Fecha:</strong> {t.date} <br />
+              <strong>Hora:</strong> {t.time} <br />
+              <strong>Estado:</strong> {t.status}
             </li>
           ))}
         </ul>
       )}
     </div>
   );
-};
+}
 
 export default BarberAppointments;
