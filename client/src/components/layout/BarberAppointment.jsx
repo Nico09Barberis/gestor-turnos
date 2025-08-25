@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getBarberAppointments } from "../../services/appointment.js";
+import { getBarberAppoitn } from "../../services/appointment";
 
 function BarberAppointments() {
   const [appointments, setAppointments] = useState([]);
@@ -8,10 +8,11 @@ function BarberAppointments() {
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const data = await getBarberAppointments(); // o getBarberAppointments("2025-08-25")
+        const data = await getBarberAppoitn();
+        console.log("Turnos recibidos:", data);
         setAppointments(data);
       } catch (err) {
-        console.error("Error al obtener turnos:", err);
+        console.error("Error en fetchAppointments:", err);
       } finally {
         setLoading(false);
       }

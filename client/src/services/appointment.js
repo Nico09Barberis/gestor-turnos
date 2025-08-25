@@ -33,7 +33,7 @@ export const createAppointment = async ({ barberId, date, time, user }) => {
 
 
 // Obtener turnos del barbero logueado
-export const getBarberAppointments = async (date = null) => {
+export const getBarberAppoitn = async (date = null) => {
   const res = await API.get("/appointments/barber", {
     params: date ? { date } : {},
   });
